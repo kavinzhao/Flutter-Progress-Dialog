@@ -90,12 +90,12 @@ class ProgressDialog {
     required String msg,
     ProgressType progressType: ProgressType.normal,
     ValuePosition valuePosition: ValuePosition.right,
-    Color backgroundColor: Colors.white,
-    Color barrierColor: Colors.transparent,
-    Color progressValueColor: Colors.blueAccent,
-    Color progressBgColor: Colors.blueGrey,
-    Color valueColor: Colors.black87,
-    Color msgColor: Colors.black87,
+    Color? backgroundColor,
+    Color? barrierColor,
+    Color? progressValueColor,
+    Color? progressBgColor,
+    Color? valueColor,
+    Color? msgColor,
     FontWeight msqFontWeight: FontWeight.bold,
     FontWeight valueFontWeight: FontWeight.normal,
     double valueFontSize: 15.0,
@@ -168,19 +168,20 @@ class ProgressDialog {
                       ),
                     ],
                   ),
-                  Align(
-                    child: Text(
-                      value <= 0 ? '' : '${_progress.value}/$max',
-                      style: TextStyle(
-                        fontSize: valueFontSize,
-                        color: valueColor,
-                        fontWeight: valueFontWeight,
+                  if (progressType == ProgressType.valuable)
+                    Align(
+                      child: Text(
+                        value <= 0 ? '' : '${_progress.value}/$max',
+                        style: TextStyle(
+                          fontSize: valueFontSize,
+                          color: valueColor,
+                          fontWeight: valueFontWeight,
+                        ),
                       ),
+                      alignment: valuePosition == ValuePosition.right
+                          ? Alignment.bottomRight
+                          : Alignment.bottomCenter,
                     ),
-                    alignment: valuePosition == ValuePosition.right
-                        ? Alignment.bottomRight
-                        : Alignment.bottomCenter,
-                  ),
                 ],
               );
             },
