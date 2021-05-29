@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
 enum ValuePosition { center, right }
 
 enum ProgressType { normal, valuable }
@@ -49,19 +51,23 @@ class ProgressDialog {
   /// [_valueProgress] Assigns progress properties and updates the value.
   //  Not directly accessible.
   _valueProgress({Color? valueColor, Color? bgColor, required double value}) {
-    return CircularProgressIndicator(
-      backgroundColor: bgColor,
-      valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
-      value: value.toDouble() / 100,
+    return PlatformCircularProgressIndicator(
+      material: (context, platform) => MaterialProgressIndicatorData(
+        backgroundColor: bgColor,
+        //valueColor: AlwaysStoppedAnimation<Color?>(valueColor), TODO: uncomment this
+        value: value.toDouble() / 100,
+      ),
     );
   }
 
   /// [_normalProgress] Assigns progress properties.
   //  Not directly accessible.
   _normalProgress({Color? valueColor, Color? bgColor}) {
-    return CircularProgressIndicator(
-      backgroundColor: bgColor,
-      valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
+    return PlatformCircularProgressIndicator(
+      material: (context, platform) => MaterialProgressIndicatorData(
+        backgroundColor: bgColor,
+        //valueColor: AlwaysStoppedAnimation<Color?>(valueColor), TODO: uncomment this
+      ),
     );
   }
 
@@ -100,17 +106,19 @@ class ProgressDialog {
   }) {
     _dialogIsOpen = true;
     _msg.value = msg;
-    return showDialog(
+    return showPlatformDialog(
       barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
+      materialBarrierColor: barrierColor,
       context: _context,
       builder: (context) => WillPopScope(
-        child: AlertDialog(
-          backgroundColor: backgroundColor,
-          elevation: elevation,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(borderRadius),
+        child: PlatformAlertDialog(
+          material: (_, __) => MaterialAlertDialogData(
+            backgroundColor: backgroundColor,
+            elevation: elevation,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(borderRadius),
+              ),
             ),
           ),
           content: ValueListenableBuilder(
